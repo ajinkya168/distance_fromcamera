@@ -1,7 +1,15 @@
 import numpy as np
 import cv2
+from picamera2 import Picamera2
+picam2 = Picamera2()
+picam2.preview_configuration.main.size = (1280,720)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.preview_configuration.align()
+picam2.configure("preview")
+picam2.start()
 
-cap = cv2.VideoCapture(0)
+
+
 
 def empty(a):
     pass
@@ -28,7 +36,7 @@ cv2.resizeWindow('F', 700,600)
 
 
 while True:
-    ret, img = cap.read()
+    img= picam2.capture_array()
     h_min = cv2.getTrackbarPos("HUE Min", "HSV")
     h_max = cv2.getTrackbarPos("HUE Max", "HSV")
     s_min = cv2.getTrackbarPos("SAT Min", "HSV")

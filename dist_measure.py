@@ -1,10 +1,17 @@
 import numpy as np
 import cv2
+from picamera2 import Picamera2
+picam2 = Picamera2()
+picam2.preview_configuration.main.size = (1280,720)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.preview_configuration.align()
+picam2.configure("preview")
+picam2.start()
 
 
 #Define object specific variables  
-dist = 0
-focal = 450
+dist = 15
+focal = 1120
 pixels = 30
 width = 4
 
@@ -45,14 +52,14 @@ cv2.resizeWindow('Object Dist Measure ', 700,600)
 
 #loop to capture video frames
 while True:
-    ret, img = cap.read()
+    img= picam2.capture_array()
 
     hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
 
     #predefined mask for green colour detection
-    lower = np.array([37, 51, 24])
-    upper = np.array([83, 104, 131])
+    lower = np.array([47, 58, 33])
+    upper = np.array([92, 246, 133])
     mask = cv2.inRange(hsv_img, lower, upper)
      
 
@@ -62,7 +69,7 @@ while True:
 
 
     #find the histogram
-    _,cont,hei = cv2.findContours(d_img,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    cont,hei = cv2.findContours(d_img,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     cont = sorted(cont, key = cv2.contourArea, reverse = True)[:1]
 
     for cnt in cont:
