@@ -9,7 +9,7 @@ picam2.configure("preview")
 picam2.start()
 
 
-#Define object specific variables  
+#Define object specific variables for green  
 dist = 15
 focal = 1120
 pixels = 30
